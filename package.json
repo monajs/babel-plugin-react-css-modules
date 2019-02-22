@@ -1,0 +1,39 @@
+{
+    "name": "@monajs/babel-plugin-react-css-modules",
+    "version": "0.0.1",
+    "description": "test",
+    "main": "index.js",
+    "scripts": {
+        "test": "mocha",
+        "babel": "rm -rf dist&&babel example --out-dir dist"
+    },
+    "files": [
+        "lib"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+.git"
+    },
+    "keywords": [
+        "list-diff",
+        "diff"
+    ],
+    "author": "yangxi",
+    "license": "ISC",
+    "bugs": {
+        "url": "/issues"
+    },
+    "homepage": "#readme",
+    "devDependencies": {
+        "@babel/cli": "^7.1.2",
+        "@babel/core": "^7.1.6",
+        "@babel/preset-env": "^7.3.1",
+        "@babel/preset-react": "^7.0.0",
+        "chai": "^4.2.0",
+        "mocha": "^6.0.0",
+        "babel-plugin-react-css-modules": "link:./"
+    },
+    "dependencies": {
+        "react": "^16.8.3"
+    }
+}
