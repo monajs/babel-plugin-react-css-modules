@@ -56,7 +56,28 @@ const transformArrayClassName = function (path, cssModules) {
 	path.replaceWith(callExpression)
 }
 
+const transformObjectClassName = function (path, cssModules) {
+	let concatMemberExpression = null
+	let callExpression = t.identifier('""')
+	const { properties } = path.node
+	properties.forEach((item, index) => {
+		concatMemberExpression = t.memberExpression(callExpression, t.identifier('concat'))
+		let { key, value } = item
+		if (t.isStringLiteral(key)) {
+			key = t.identifier(key.value)
+		}
+		const classExpression = t.memberExpression(cssModules, key)
+		const conditionalExpression = t.conditionalExpression(value, classExpression, t.identifier('""'))
+		callExpression = t.callExpression(concatMemberExpression, [
+			conditionalExpression,
+			t.identifier(index === properties.length - 1 ? '""' : '" "')
+		])
+	})
+	path.replaceWith(callExpression)
+}
+
 module.exports = {
 	transformStringClassName,
-	transformArrayClassName
+	transformArrayClassName,
+	transformObjectClassName
 }

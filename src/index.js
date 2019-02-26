@@ -4,7 +4,7 @@
  * @author yangxi | 599321378@qq.com
  */
 
-const { transformStringClassName, transformArrayClassName } = require('./core/transform')
+const { transformStringClassName, transformArrayClassName, transformObjectClassName } = require('./core/transform')
 const { IMPORT_CSS_MODULE_NAME } = require('./core/constant')
 
 module.exports = function ({ types: t }) {
@@ -48,6 +48,12 @@ module.exports = function ({ types: t }) {
 					ArrayExpression (path) {
 						if (path.parentPath.isJSXExpressionContainer() && path.parentPath.parentPath.isJSXAttribute()) {
 							transformArrayClassName(path, cssModules)
+						}
+					},
+
+					ObjectExpression (path) {
+						if (path.parentPath.isJSXExpressionContainer() && path.parentPath.parentPath.isJSXAttribute()) {
+							transformObjectClassName(path, cssModules)
 						}
 					}
 				})
