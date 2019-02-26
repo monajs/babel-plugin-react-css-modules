@@ -14,7 +14,7 @@ fs.readFile(path, { encoding: 'utf8' }, (err, data) => {
 			require('@babel/preset-env')
 		],
 		plugins: [
-			require('./src')
+			require('../src/index')
 		]
 	})
 	fs.writeFile(outPath, result.code, 'utf8', (err) => {

@@ -1,6 +1,6 @@
 "use strict";
 
-var _IMPORT_CSS_ = _interopRequireWildcard(require("./index.less"));
+var _MONAJS_IMPORT_CSS_ = _interopRequireWildcard(require("./index.less"));
 
 var _events = _interopRequireDefault(require("events"));
 
@@ -11,7 +11,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 //{['aaa', 'bbb', {aaa: true}]}
 var bad = true;
 var aaa = React.createElement("div", {
-  className: "".concat(_IMPORT_CSS_.ssss, " ").concat(_IMPORT_CSS_.fds)
+  className: "".concat(_MONAJS_IMPORT_CSS_.ssss, " ").concat(_MONAJS_IMPORT_CSS_.fds)
 }, React.createElement("div", {
   aaa: "".concat(styles.name, " ").concat(styles.age)
 }, "Home - aaaaa"), React.createElement("div", null, _events.default.on));
