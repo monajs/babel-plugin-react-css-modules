@@ -1,0 +1,5 @@
+const IMPORT_CSS_MODULE_NAME = '_MONAJS_IMPORT_CSS_'
+
+module.exports = {
+	IMPORT_CSS_MODULE_NAME
+}

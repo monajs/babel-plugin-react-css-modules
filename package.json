@@ -2,7 +2,7 @@
     "name": "@monajs/babel-plugin-react-css-modules",
     "version": "0.0.1",
     "description": "test",
-    "main": "index.js",
+    "main": "src/index.js",
     "scripts": {
         "test": "mocha",
         "babel": "rm -rf dist&&babel example --out-dir dist"
@@ -12,28 +12,29 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git+.git"
+        "url": "git+https://github.com/monajs/babel-plugin-react-css-modules.git"
     },
     "keywords": [
         "list-diff",
         "diff"
     ],
     "author": "yangxi",
-    "license": "ISC",
+    "license": "MIT",
     "bugs": {
-        "url": "/issues"
+        "url": "https://github.com/monajs/babel-plugin-react-css-modules/issues"
     },
-    "homepage": "#readme",
+    "homepage": "https://github.com/monajs/babel-plugin-react-css-modules#readme",
     "devDependencies": {
-        "@babel/cli": "^7.1.2",
-        "@babel/core": "^7.1.6",
+        "@babel/cli": "^7.2.3",
+        "@babel/core": "^7.3.3",
         "@babel/preset-env": "^7.3.1",
         "@babel/preset-react": "^7.0.0",
         "chai": "^4.2.0",
         "mocha": "^6.0.0",
-        "babel-plugin-react-css-modules": "link:./"
+        "react": "^16.8.3"
     },
     "dependencies": {
-        "react": "^16.8.3"
+        "@babel/plugin-syntax-jsx": "^7.2.0",
+        "@babel/types": "^7.3.3"
     }
 }

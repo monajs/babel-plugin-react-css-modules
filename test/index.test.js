@@ -1,4 +1,4 @@
-const index = require('../index.js')
+const index = require('../src/index.js')
 const chai = require('chai')
 chai.should()
 
