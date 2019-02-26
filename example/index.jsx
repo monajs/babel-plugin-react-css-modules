@@ -1,12 +1,50 @@
 import './index.less'
-
-//{['aaa', 'bbb', {aaa: true}]}
 import events from 'events'
 
-const bad = true
-const aaa = (
-	<div className='ssss fds'>
-		<div aaa={`${styles.name} ${styles.age}`}>Home - aaaaa</div>
+const a1 = (
+	<div className='ssss'>
 		<div>{events.on}</div>
 	</div>
 )
+
+const a2 = (
+	<div className='ssss fds ss'>
+		<div>{events.on}</div>
+	</div>
+)
+
+const a3 = (
+	<div className='ssss   fds  '>
+		<div>{events.on}</div>
+	</div>
+)
+
+const b1 = (
+	<div className={['aaa']}>
+		<div>{events.on}</div>
+	</div>
+)
+
+// const b2 = (
+// 	<div className={['aaa', 'bbb', { ccc: true }]}>
+// 		<div>{events.on}</div>
+// 	</div>
+// )
+//
+// const b3 = (
+// 	<div className={['aaa', 'bbb', { 'sssccc': events.on }]}>
+// 		<div>{events.on}</div>
+// 	</div>
+// )
+
+const b4 = (
+	<div className={['aaa', 'bbb', { 'sssccc': events.on, fff: true, 'fdsfff': false }]}>
+		<div>{events.on}</div>
+	</div>
+)
+//
+// const c1 = (
+// 	<div className={{ 'sssccc': true }}>
+// 		<div>{events.on}</div>
+// 	</div>
+// )

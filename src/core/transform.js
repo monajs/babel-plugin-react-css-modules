@@ -1,16 +1,62 @@
+/**
+ * @fileoverview babel-plugin-react-css-modules
+ * @author yangxi | 599321378@qq.com
+ */
+
 const t = require('@babel/types')
+const { getClassList } = require('./util')
+
+// 转换 string 格式的 className
+const transformStringClassName = function (path, cssModules) {
+	let concatMemberExpression = null
+	let callExpression = t.identifier('""')
+
+	const classList = getClassList(path.node.value)
+	classList.forEach((v, i) => {
+		concatMemberExpression = t.memberExpression(callExpression, t.identifier('concat'))
+		callExpression = t.callExpression(concatMemberExpression, [
+			t.memberExpression(cssModules, t.identifier(v)),
+			t.identifier(i === classList.length - 1 ? '""' : '" "')
+		])
+	})
+	const expresion = t.JSXExpressionContainer(callExpression)
+	path.replaceWith(expresion)
+}
+
+// 转换 array 格式的 className
+const transformArrayClassName = function (path, cssModules) {
+	let concatMemberExpression = null
+	let callExpression = t.identifier('""')
+
+	const classList = path.node.elements
+	classList.forEach((v, i) => {
+		if (t.isStringLiteral(v)) {
+			concatMemberExpression = t.memberExpression(callExpression, t.identifier('concat'))
+			callExpression = t.callExpression(concatMemberExpression, [
+				t.memberExpression(cssModules, t.identifier(v.value)),
+				t.identifier(i === classList.length - 1 ? '""' : '" "')
+			])
+		} else if (t.isObjectExpression(v)) {
+			const { properties } = v
+			properties.forEach((item, index) => {
+				concatMemberExpression = t.memberExpression(callExpression, t.identifier('concat'))
+				let { key, value } = item
+				if (t.isStringLiteral(key)) {
+					key = t.identifier(key.value)
+				}
+				const classExpression = t.memberExpression(cssModules, key)
+				const conditionalExpression = t.conditionalExpression(value, classExpression, t.identifier('""'))
+				callExpression = t.callExpression(concatMemberExpression, [
+					conditionalExpression,
+					t.identifier(i === classList.length - 1 && index === properties.length - 1 ? '""' : '" "')
+				])
+			})
+		}
+	})
+	path.replaceWith(callExpression)
+}
 
 module.exports = {
-	handleStringLiteral (path, options) {
-		const { node } = path
-		const { value } = node
-
-		if (!value.trim()) {
-			return
-		}
-
-		const expression = handlerString(value, options)
-
-		path.replaceWith(path.parentPath.isJSXExpressionContainer() ? expression : t.jsxExpressionContainer(expression))
-	}
+	transformStringClassName,
+	transformArrayClassName
 }

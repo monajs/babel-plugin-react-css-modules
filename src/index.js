@@ -1,4 +1,10 @@
-const { getClassList } = require('./core/util')
+/***
+ * babel-plugin-react-css-modules
+ * @fileoverview babel-plugin-react-css-modules
+ * @author yangxi | 599321378@qq.com
+ */
+
+const { transformStringClassName, transformArrayClassName } = require('./core/transform')
 const { IMPORT_CSS_MODULE_NAME } = require('./core/constant')
 
 module.exports = function ({ types: t }) {
@@ -33,34 +39,17 @@ module.exports = function ({ types: t }) {
 				path.traverse({
 					// 处理 className 为 string 的场景
 					StringLiteral (path) {
-						let concatMemberExpression = null
-						let callExpression = t.identifier('""')
+						if (path.parentPath.isJSXAttribute() ||
+							(path.parentPath.isJSXExpressionContainer() && path.parentPath.parentPath.isJSXAttribute())) {
+							transformStringClassName(path, cssModules)
+						}
+					},
 
-						const classList = getClassList(path.node.value)
-						classList.forEach((v, i) => {
-							concatMemberExpression = t.memberExpression(callExpression, t.identifier('concat'))
-							if (i === classList.length - 1) {
-								callExpression = t.callExpression(concatMemberExpression, [
-									t.memberExpression(cssModules, t.identifier(v))
-								])
-							} else {
-								callExpression = t.callExpression(concatMemberExpression, [
-									t.memberExpression(cssModules, t.identifier(v)),
-									t.identifier('" "')
-								])
-							}
-						})
-						const expresion = t.JSXExpressionContainer(callExpression)
-						path.replaceWith(expresion)
+					ArrayExpression (path) {
+						if (path.parentPath.isJSXExpressionContainer() && path.parentPath.parentPath.isJSXAttribute()) {
+							transformArrayClassName(path, cssModules)
+						}
 					}
-					// ObjectExpression (path) {
-					// 	console.log('object')
-					// 	console.log(path)
-					// },
-					// TemplateLiteral (path) {
-					// 	console.log('template')
-					// 	console.log(path.node.expressions)
-					// }
 				})
 			}
 		}
