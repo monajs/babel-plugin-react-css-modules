@@ -4,7 +4,7 @@
  */
 
 const t = require('@babel/types')
-const { getClassList } = require('./util')
+const { getClassList, optionCssModules } = require('./util')
 
 // 转换 string 格式的 className
 const transformStringClassName = function (path, cssModules) {
@@ -15,7 +15,7 @@ const transformStringClassName = function (path, cssModules) {
 	classList.forEach((v, i) => {
 		concatMemberExpression = t.memberExpression(callExpression, t.identifier('concat'))
 		callExpression = t.callExpression(concatMemberExpression, [
-			t.memberExpression(cssModules, t.identifier(v)),
+			optionCssModules(cssModules, t.identifier(v)),
 			t.identifier(i === classList.length - 1 ? '""' : '" "')
 		])
 	})
@@ -33,7 +33,7 @@ const transformArrayClassName = function (path, cssModules) {
 		if (t.isStringLiteral(v)) {
 			concatMemberExpression = t.memberExpression(callExpression, t.identifier('concat'))
 			callExpression = t.callExpression(concatMemberExpression, [
-				t.memberExpression(cssModules, t.identifier(v.value)),
+				optionCssModules(cssModules, t.identifier(v.value)),
 				t.identifier(i === classList.length - 1 ? '""' : '" "')
 			])
 		} else if (t.isObjectExpression(v)) {
@@ -44,7 +44,7 @@ const transformArrayClassName = function (path, cssModules) {
 				if (t.isStringLiteral(key)) {
 					key = t.identifier(key.value)
 				}
-				const classExpression = t.memberExpression(cssModules, key)
+				const classExpression = optionCssModules(cssModules, key)
 				const conditionalExpression = t.conditionalExpression(value, classExpression, t.identifier('""'))
 				callExpression = t.callExpression(concatMemberExpression, [
 					conditionalExpression,
@@ -56,6 +56,7 @@ const transformArrayClassName = function (path, cssModules) {
 	path.replaceWith(callExpression)
 }
 
+// 转换 json 格式的 className
 const transformObjectClassName = function (path, cssModules) {
 	let concatMemberExpression = null
 	let callExpression = t.identifier('""')
@@ -66,7 +67,7 @@ const transformObjectClassName = function (path, cssModules) {
 		if (t.isStringLiteral(key)) {
 			key = t.identifier(key.value)
 		}
-		const classExpression = t.memberExpression(cssModules, key)
+		const classExpression = optionCssModules(cssModules, key)
 		const conditionalExpression = t.conditionalExpression(value, classExpression, t.identifier('""'))
 		callExpression = t.callExpression(concatMemberExpression, [
 			conditionalExpression,

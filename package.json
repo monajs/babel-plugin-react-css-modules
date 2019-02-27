@@ -1,6 +1,6 @@
 {
     "name": "@monajs/babel-plugin-react-css-modules",
-    "version": "0.0.1",
+    "version": "0.2.0",
     "description": "test",
     "main": "src/index.js",
     "scripts": {
@@ -8,7 +8,7 @@
         "babel": "rm -rf dist&&babel example --out-dir dist"
     },
     "files": [
-        "lib"
+        "src"
     ],
     "repository": {
         "type": "git",
@@ -29,6 +29,9 @@
         "@babel/core": "^7.3.3",
         "@babel/preset-env": "^7.3.1",
         "@babel/preset-react": "^7.0.0",
+        "@babel/plugin-proposal-class-properties": "^7.1.0",
+        "babel-plugin-jsx-control-statements": "^3.2.8",
+        "babel-plugin-transform-object-assign": "^6.22.0",
         "chai": "^4.2.0",
         "mocha": "^6.0.0",
         "react": "^16.8.3"

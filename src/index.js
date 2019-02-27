@@ -45,12 +45,14 @@ module.exports = function ({ types: t }) {
 						}
 					},
 
+					// 处理 className 为 array 的场景
 					ArrayExpression (path) {
 						if (path.parentPath.isJSXExpressionContainer() && path.parentPath.parentPath.isJSXAttribute()) {
 							transformArrayClassName(path, cssModules)
 						}
 					},
 
+					// 处理 className 为 json 的场景
 					ObjectExpression (path) {
 						if (path.parentPath.isJSXExpressionContainer() && path.parentPath.parentPath.isJSXAttribute()) {
 							transformObjectClassName(path, cssModules)
