@@ -51,6 +51,13 @@ const transformArrayClassName = function (path, cssModules) {
 					t.identifier(i === classList.length - 1 && index === properties.length - 1 ? '""' : '" "')
 				])
 			})
+		} else {
+			// 非字符串和json
+			concatMemberExpression = t.memberExpression(callExpression, t.identifier('concat'))
+			callExpression = t.callExpression(concatMemberExpression, [
+				optionCssModules(cssModules, v),
+				t.identifier(i === classList.length - 1 ? '""' : '" "')
+			])
 		}
 	})
 	path.replaceWith(callExpression)

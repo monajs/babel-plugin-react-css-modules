@@ -8,25 +8,34 @@ const { transformStringClassName, transformArrayClassName, transformObjectClassN
 const { IMPORT_CSS_MODULE_NAME } = require('./core/constant')
 
 module.exports = function ({ types: t }) {
-	let cssModules = t.identifier(IMPORT_CSS_MODULE_NAME)
+	let cssModules = null
 	return {
 		name: 'react-css-modules',
 		visitor: {
 			ImportDeclaration (path) {
+				if (cssModules) {
+					return
+				}
 				const { node: { specifiers, source } } = path
 				if (!/\.(?:less|css|s[ac]ss)$/i.test(source.value)) {
 					return
 				}
 
+				let defaultSpecifiers = null
+				let importDeclaration = null
+
 				if (specifiers.length === 0) {
-					const defaultSpecifiers = t.importNamespaceSpecifier(cssModules)
-					const importDeclaration = t.importDeclaration([defaultSpecifiers], source)
-					path.replaceWith(importDeclaration)
+					cssModules = t.identifier(IMPORT_CSS_MODULE_NAME)
+					defaultSpecifiers = t.importNamespaceSpecifier(cssModules)
+					importDeclaration = t.importDeclaration([defaultSpecifiers], source)
 				} else if (specifiers.length === 1) {
-					const [spec] = specifiers
-					const { local } = spec
-					cssModules = local
+					const [specifier] = specifiers
+					const { local } = specifier
+					cssModules = t.identifier(local.name)
+					defaultSpecifiers = t.importNamespaceSpecifier(cssModules)
+					importDeclaration = t.importDeclaration([defaultSpecifiers], source)
 				}
+				path.replaceWith(importDeclaration)
 			},
 
 			JSXAttribute (path) {
