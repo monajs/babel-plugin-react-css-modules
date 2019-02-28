@@ -1,3 +1,5 @@
+import './index.less'
+
 const a1 = (
 	<div className='ssss'>
 		<div>{events.on}</div>

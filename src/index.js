@@ -4,6 +4,7 @@
  * @author yangxi | 599321378@qq.com
  */
 
+const babelPluginSyntaxJSX = require('@babel/plugin-syntax-jsx')
 const { transformStringClassName, transformArrayClassName, transformObjectClassName } = require('./core/transform')
 const { IMPORT_CSS_MODULE_NAME } = require('./core/constant')
 
@@ -11,6 +12,7 @@ module.exports = function ({ types: t }) {
 	let cssModules = null
 	return {
 		name: 'react-css-modules',
+		inherits: babelPluginSyntaxJSX.default,
 		visitor: {
 			ImportDeclaration (path) {
 				if (cssModules) {
@@ -26,7 +28,7 @@ module.exports = function ({ types: t }) {
 
 				if (specifiers.length === 0) {
 					cssModules = t.identifier(IMPORT_CSS_MODULE_NAME)
-					defaultSpecifiers = t.importNamespaceSpecifier(cssModules)
+					defaultSpecifiers = t.ImportDefaultSpecifier(cssModules)
 					importDeclaration = t.importDeclaration([defaultSpecifiers], source)
 					path.replaceWith(importDeclaration)
 				}

@@ -1,3 +1,5 @@
+import './index.less'
+
 const c1 = (
 	<div className={{ 'sssccc': true }}>
 		<div>{events.on}</div>

@@ -1,3 +1,5 @@
+import './index.less'
+
 // 纯 string
 const b1 = (
 	<div className={['aaa']}>
@@ -36,6 +38,13 @@ const b5 = (
 // 纯 string + json + 变量 + 函数
 const b6 = (
 	<div className={[this.func(a, b, 'dsds'), { ccc: true }, 'sss']}>
+		<div>{events.on}</div>
+	</div>
+)
+
+// 纯 string + json + 变量 + 函数
+const b7 = (
+	<div className={[this.func(a, b, 'dsds-fds'), { 'fd-ssss-fdfdfd': true }, 'sss-dd-dd']}>
 		<div>{events.on}</div>
 	</div>
 )
