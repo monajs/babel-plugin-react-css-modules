@@ -28,14 +28,14 @@ module.exports = function ({ types: t }) {
 					cssModules = t.identifier(IMPORT_CSS_MODULE_NAME)
 					defaultSpecifiers = t.importNamespaceSpecifier(cssModules)
 					importDeclaration = t.importDeclaration([defaultSpecifiers], source)
-				} else if (specifiers.length === 1) {
-					const [specifier] = specifiers
-					const { local } = specifier
-					cssModules = t.identifier(local.name)
-					defaultSpecifiers = t.importNamespaceSpecifier(cssModules)
-					importDeclaration = t.importDeclaration([defaultSpecifiers], source)
+					path.replaceWith(importDeclaration)
 				}
-				path.replaceWith(importDeclaration)
+
+				if (specifiers.length === 1) {
+					const [spec] = specifiers
+					const { local } = spec
+					cssModules = local
+				}
 			},
 
 			JSXAttribute (path) {
@@ -48,6 +48,9 @@ module.exports = function ({ types: t }) {
 				path.traverse({
 					// 处理 className 为 string 的场景
 					StringLiteral (path) {
+						if (!cssModules) {
+							return
+						}
 						if (path.parentPath.isJSXAttribute() ||
 							(path.parentPath.isJSXExpressionContainer() && path.parentPath.parentPath.isJSXAttribute())) {
 							transformStringClassName(path, cssModules)
@@ -56,6 +59,9 @@ module.exports = function ({ types: t }) {
 
 					// 处理 className 为 array 的场景
 					ArrayExpression (path) {
+						if (!cssModules) {
+							return
+						}
 						if (path.parentPath.isJSXExpressionContainer() && path.parentPath.parentPath.isJSXAttribute()) {
 							transformArrayClassName(path, cssModules)
 						}
@@ -63,6 +69,9 @@ module.exports = function ({ types: t }) {
 
 					// 处理 className 为 json 的场景
 					ObjectExpression (path) {
+						if (!cssModules) {
+							return
+						}
 						if (path.parentPath.isJSXExpressionContainer() && path.parentPath.parentPath.isJSXAttribute()) {
 							transformObjectClassName(path, cssModules)
 						}

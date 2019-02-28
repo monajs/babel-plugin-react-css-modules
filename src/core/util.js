@@ -14,7 +14,7 @@ const getClassList = function (classes) {
 const optionCssModules = function (cssModules, path) {
 	let classModulesExpression = null
 	if (t.isIdentifier(path)) {
-		classModulesExpression = t.memberExpression(cssModules, path)
+		classModulesExpression = t.memberExpression(cssModules, t.stringLiteral(path.name), true)
 		return t.logicalExpression('||', classModulesExpression, t.stringLiteral(path.name))
 	}
 	classModulesExpression = t.memberExpression(cssModules, path, true)
