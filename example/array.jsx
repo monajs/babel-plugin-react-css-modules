@@ -16,7 +16,7 @@ const b2 = (
 
 // 纯 string + json变形
 const b3 = (
-	<div className={['aaa', 'bbb', { 'sssccc': events.on }]}>
+	<div className={['aaa', bbb, { 'sssccc': events.on }]}>
 		<div>{events.on}</div>
 	</div>
 )
