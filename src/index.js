@@ -16,7 +16,7 @@ module.exports = function ({ types: t }) {
 		visitor: {
 			ImportDeclaration (path) {
 				const { node: { specifiers, source } } = path
-				if (!/index\.(?:less|css|s[ac]ss)$/i.test(source.value)) {
+				if (!/\/index\.(?:less|css|s[ac]ss)$/i.test(source.value)) {
 					return
 				}
 
@@ -47,7 +47,7 @@ module.exports = function ({ types: t }) {
 				path.traverse({
 					// 处理 className 为 string 的场景
 					StringLiteral (path) {
-						if (!path.scope.hasBinding(cssModules.name)) {
+						if (!cssModules || !path.scope.hasBinding(cssModules.name)) {
 							return
 						}
 						if (path.parentPath.isJSXAttribute() ||
@@ -58,7 +58,7 @@ module.exports = function ({ types: t }) {
 
 					// 处理 className 为 array 的场景
 					ArrayExpression (path) {
-						if (!path.scope.hasBinding(cssModules.name)) {
+						if (!cssModules || !path.scope.hasBinding(cssModules.name)) {
 							return
 						}
 						if (path.parentPath.isJSXExpressionContainer() && path.parentPath.parentPath.isJSXAttribute()) {
@@ -68,7 +68,7 @@ module.exports = function ({ types: t }) {
 
 					// 处理 className 为 json 的场景
 					ObjectExpression (path) {
-						if (!path.scope.hasBinding(cssModules.name)) {
+						if (!cssModules || !path.scope.hasBinding(cssModules.name)) {
 							return
 						}
 						if (path.parentPath.isJSXExpressionContainer() && path.parentPath.parentPath.isJSXAttribute()) {

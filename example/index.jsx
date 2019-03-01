@@ -1,4 +1,4 @@
-import './index.less'
+import './1index.less'
 
 const c1 = (
 	<div className={{ 'sssccc': true }}>
