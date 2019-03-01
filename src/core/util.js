@@ -14,16 +14,19 @@ const getClassList = function (classes) {
 const optionCssModules = function (cssModules, path) {
 	let classModulesExpression = null
 	if (t.isIdentifier(path)) {
+		// 单一变量类型
 		classModulesExpression = t.memberExpression(cssModules, t.stringLiteral(path.name), true)
-		return t.logicalExpression('||', classModulesExpression, t.stringLiteral(path.name))
+		const expression2 = t.logicalExpression('||', path, t.identifier('""'))
+		return t.logicalExpression('||', classModulesExpression, expression2)
+	} else if (t.isStringLiteral(path)) {
+		// 字符串类型
+		classModulesExpression = t.memberExpression(cssModules, path, true)
+		return t.logicalExpression('||', classModulesExpression, path)
 	}
+	// 其他类型
 	classModulesExpression = t.memberExpression(cssModules, path, true)
 	const expression2 = t.logicalExpression('||', path, t.identifier('""'))
 	return t.logicalExpression('||', classModulesExpression, expression2)
-}
-
-const hasBindCssModules = function (cssModules, path) {
-	return path.scope.hasBindings
 }
 
 module.exports = {

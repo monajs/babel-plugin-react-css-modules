@@ -15,7 +15,7 @@ const transformStringClassName = function (path, cssModules) {
 	classList.forEach((v, i) => {
 		concatMemberExpression = t.memberExpression(callExpression, t.identifier('concat'))
 		callExpression = t.callExpression(concatMemberExpression, [
-			optionCssModules(cssModules, t.identifier(v)),
+			optionCssModules(cssModules, t.stringLiteral(v)),
 			t.identifier(i === classList.length - 1 ? '""' : '" "')
 		])
 	})
@@ -33,7 +33,7 @@ const transformArrayClassName = function (path, cssModules) {
 		if (t.isStringLiteral(v)) {
 			concatMemberExpression = t.memberExpression(callExpression, t.identifier('concat'))
 			callExpression = t.callExpression(concatMemberExpression, [
-				optionCssModules(cssModules, t.identifier(v.value)),
+				optionCssModules(cssModules, v),
 				t.identifier(i === classList.length - 1 ? '""' : '" "')
 			])
 		} else if (t.isObjectExpression(v)) {
@@ -41,8 +41,8 @@ const transformArrayClassName = function (path, cssModules) {
 			properties.forEach((item, index) => {
 				concatMemberExpression = t.memberExpression(callExpression, t.identifier('concat'))
 				let { key, value } = item
-				if (t.isStringLiteral(key)) {
-					key = t.identifier(key.value)
+				if (t.isIdentifier(key)) {
+					key = t.stringLiteral(key.name)
 				}
 				const classExpression = optionCssModules(cssModules, key)
 				const conditionalExpression = t.conditionalExpression(value, classExpression, t.identifier('""'))
@@ -52,7 +52,7 @@ const transformArrayClassName = function (path, cssModules) {
 				])
 			})
 		} else {
-			// 非字符串和json
+			// 非字符串和链式表达式
 			concatMemberExpression = t.memberExpression(callExpression, t.identifier('concat'))
 			callExpression = t.callExpression(concatMemberExpression, [
 				optionCssModules(cssModules, v),
@@ -71,8 +71,8 @@ const transformObjectClassName = function (path, cssModules) {
 	properties.forEach((item, index) => {
 		concatMemberExpression = t.memberExpression(callExpression, t.identifier('concat'))
 		let { key, value } = item
-		if (t.isStringLiteral(key)) {
-			key = t.identifier(key.value)
+		if (t.isIdentifier(key)) {
+			key = t.stringLiteral(key.name)
 		}
 		const classExpression = optionCssModules(cssModules, key)
 		const conditionalExpression = t.conditionalExpression(value, classExpression, t.identifier('""'))
