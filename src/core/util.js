@@ -18,7 +18,12 @@ const optionCssModules = function (cssModules, path) {
 		return t.logicalExpression('||', classModulesExpression, t.stringLiteral(path.name))
 	}
 	classModulesExpression = t.memberExpression(cssModules, path, true)
-	return t.logicalExpression('||', classModulesExpression, t.identifier('""'))
+	const expression2 = t.logicalExpression('||', path, t.identifier('""'))
+	return t.logicalExpression('||', classModulesExpression, expression2)
+}
+
+const hasBindCssModules = function (cssModules, path) {
+	return path.scope.hasBindings
 }
 
 module.exports = {

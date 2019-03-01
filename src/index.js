@@ -15,11 +15,8 @@ module.exports = function ({ types: t }) {
 		inherits: babelPluginSyntaxJSX.default,
 		visitor: {
 			ImportDeclaration (path) {
-				if (cssModules) {
-					return
-				}
 				const { node: { specifiers, source } } = path
-				if (!/\.(?:less|css|s[ac]ss)$/i.test(source.value)) {
+				if (!/index\.(?:less|css|s[ac]ss)$/i.test(source.value)) {
 					return
 				}
 
@@ -27,8 +24,8 @@ module.exports = function ({ types: t }) {
 				let importDeclaration = null
 
 				if (specifiers.length === 0) {
-					cssModules = t.identifier(IMPORT_CSS_MODULE_NAME)
-					defaultSpecifiers = t.ImportDefaultSpecifier(cssModules)
+					cssModules = path.scope.generateUidIdentifier(IMPORT_CSS_MODULE_NAME)
+					defaultSpecifiers = t.importNamespaceSpecifier(cssModules)
 					importDeclaration = t.importDeclaration([defaultSpecifiers], source)
 					path.replaceWith(importDeclaration)
 				}
@@ -50,7 +47,7 @@ module.exports = function ({ types: t }) {
 				path.traverse({
 					// 处理 className 为 string 的场景
 					StringLiteral (path) {
-						if (!cssModules) {
+						if (!path.scope.hasBinding(cssModules.name)) {
 							return
 						}
 						if (path.parentPath.isJSXAttribute() ||
@@ -61,7 +58,7 @@ module.exports = function ({ types: t }) {
 
 					// 处理 className 为 array 的场景
 					ArrayExpression (path) {
-						if (!cssModules) {
+						if (!path.scope.hasBinding(cssModules.name)) {
 							return
 						}
 						if (path.parentPath.isJSXExpressionContainer() && path.parentPath.parentPath.isJSXAttribute()) {
@@ -71,7 +68,7 @@ module.exports = function ({ types: t }) {
 
 					// 处理 className 为 json 的场景
 					ObjectExpression (path) {
-						if (!cssModules) {
+						if (!path.scope.hasBinding(cssModules.name)) {
 							return
 						}
 						if (path.parentPath.isJSXExpressionContainer() && path.parentPath.parentPath.isJSXAttribute()) {
