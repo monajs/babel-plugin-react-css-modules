@@ -1,25 +1,9 @@
 "use strict";
 
-require("./1index.less");
+var _MONAJS_IMPORT_CSS_ = _interopRequireWildcard(require("./index.less"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 var c1 = React.createElement("div", {
-  className: {
-    'sssccc': true
-  }
-}, React.createElement("div", null, events.on));
-var c2 = React.createElement("div", {
-  className: {
-    'sssccc': true,
-    fds: events
-  }
-}, React.createElement("div", null, events.on));
-var c3 = React.createElement("div", {
-  className: {}
-}, React.createElement("div", null, events.on));
-var c4 = React.createElement("div", {
-  className: {
-    'sssccc': true,
-    fds: (void 0).events.on,
-    'abc': (void 0).func(sss, 'fds', 123)
-  }
-}, React.createElement("div", null, events.on));
+  className: "aaa ".concat((void 0).css.aaa)
+}, React.createElement("div", null, "Homess - asfa"));
