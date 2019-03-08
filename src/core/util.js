@@ -5,7 +5,7 @@
 
 // 获取 class 列表
 const getClassList = function (classes) {
-	return classes.split(' ').filter(v => v)
+	return classes.split(' ').filter(v => !!v)
 }
 
 module.exports = {

@@ -51,12 +51,7 @@ const transformArrayClassName = function (path, cssModules) {
 	let arguments = []
 	const classList = path.node.elements
 	classList.forEach((v, i) => {
-		if (t.isStringLiteral(v)) {
-			arguments.push(
-				optionCssModules(cssModules, v),
-				t.identifier(i === classList.length - 1 ? '""' : '" "')
-			)
-		} else if (t.isObjectExpression(v)) {
+		if (t.isObjectExpression(v)) {
 			const { properties } = v
 			properties.forEach((item, index) => {
 				let { key, value } = item
@@ -71,7 +66,7 @@ const transformArrayClassName = function (path, cssModules) {
 				)
 			})
 		} else {
-			// 非字符串和链式表达式
+			// 非 json 类型
 			arguments.push(
 				optionCssModules(cssModules, v),
 				t.identifier(i === classList.length - 1 ? '""' : '" "')
