@@ -1,4 +1,4 @@
-# Mona - babel-plugin-react-css-modules
+# babel-plugin-react-css-modules
 
 ✨✨ 一款非常实用的 react-css-modules 插件
 
@@ -73,5 +73,5 @@ const c3 = (
 
 
 ## 联系我
-> 微信：599321378
+> 微信：yx12032331
 
