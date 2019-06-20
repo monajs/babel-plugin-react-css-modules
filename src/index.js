@@ -15,11 +15,10 @@ module.exports = function ({ types: t }) {
 		inherits: babelPluginSyntaxJSX.default,
 		visitor: {
 			ImportDeclaration (path) {
-				const { node: { specifiers, source } } = path
-				if (!/\/index\.(?:less|css|s[ac]ss)$/i.test(source.value)) {
-					return
-				}
-
+        const { node: { specifiers, source } } = path
+        if (!/\.(?:less|css|s[ac]ss)$/i.test(source.value)) {
+          return
+        }
 				let defaultSpecifiers = null
 				let importDeclaration = null
 
