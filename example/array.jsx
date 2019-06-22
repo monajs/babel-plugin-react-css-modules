@@ -9,7 +9,7 @@ const b1 = (
 
 // 纯 string + json
 const b2 = (
-	<div className={['aaa', 'bbb', { ccc: true }]}>
+	<div className={['aaa', {'ddd': false}, 'bbb', { ccc: true }]}>
 		<div>{events.on}</div>
 	</div>
 )

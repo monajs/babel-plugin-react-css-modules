@@ -1,5 +1,5 @@
 /**
- * @fileoverview babel-plugin-react-css-modules
+ * 常量
  * @author yangxi | 599321378@qq.com
  */
 
