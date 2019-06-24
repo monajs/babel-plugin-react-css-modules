@@ -2,7 +2,7 @@ const babel = require('@babel/core')
 const types = require('@babel/types')
 const fs = require('fs')
 
-const path = './example/index.jsx'
+const path = './example/string.jsx'
 const outPath = './dist/index.js'
 
 fs.readFile(path, { encoding: 'utf8' }, (err, data) => {

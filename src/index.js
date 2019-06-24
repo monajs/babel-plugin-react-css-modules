@@ -27,18 +27,29 @@ module.exports = function ({ types: t }) {
 		name: 'react-css-modules',
 		inherits: babelPluginSyntaxJSX.default,
 		visitor: {
+			Program () {
+				cssModules = []
+				count = 0
+			},
+
 			ImportDeclaration (path) {
 				const { node: { specifiers, source } } = path
-				if (specifiers.length !== 0 || !/\.(?:less|css|s[ac]ss)$/i.test(source.value)) return
+				// if (specifiers.length !== 0 || !/\.(?:less|css|s[ac]ss)$/i.test(source.value)) return
 
-				const nameIdentifier = path.scope.generateUidIdentifier(`${IMPORT_CSS_MODULE_NAME}${count++}_`)
-				const defaultSpecifiers = t.importNamespaceSpecifier(nameIdentifier)
-				const importDeclaration = t.importDeclaration([defaultSpecifiers], source)
+				if (!/\.(?:less|css|s[ac]ss)$/i.test(source.value)) return
 
-				const { local } = defaultSpecifiers
-				cssModules.unshift(local)
+				if (specifiers.length === 0) {
+					const nameIdentifier = path.scope.generateUidIdentifier(`${IMPORT_CSS_MODULE_NAME}${count++}_`)
+					const defaultSpecifiers = t.importNamespaceSpecifier(nameIdentifier)
+					const importDeclaration = t.importDeclaration([defaultSpecifiers], source)
+					path.replaceWith(importDeclaration)
+				}
 
-				path.replaceWith(importDeclaration)
+				if (specifiers.length === 1) {
+					const [spec] = specifiers
+					const { local } = spec
+					cssModules.unshift(local)
+				}
 			},
 
 			JSXAttribute (path) {
