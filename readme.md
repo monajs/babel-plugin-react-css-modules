@@ -28,7 +28,7 @@ const a2 = (
 ### 数组形式
 ```js
 const b1 = (
-	<div className={['aaa', 'bbb']}>
+	<div className={['aaa', 'bbb', 'ccc ddd']}>
 		<div>{events.on}</div>
 	</div>
 )
@@ -68,7 +68,6 @@ const c3 = (
 ```
 
 ## 使用注意点
-* 插件会读取样式文件的引入，若未识别到命名为`index`的样式文件，则跳过该文件的转换（路径正则匹配`/\/index\.(?:less|css|s[ac]ss)$/i`）
 * 插件只会处理 `string` 类型、`array` 类型、`json` 类型的 `CSS Modules` 转换，不会对模版字符串、字符串叠加计算等方式进行转换
 
 
