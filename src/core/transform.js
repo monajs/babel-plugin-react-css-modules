@@ -26,12 +26,12 @@ const optionCssModules = function (cssModules, path) {
 /**
  * concat 操作
  * @param path
- * @param arguments
+ * @param args
  */
-const concatHandler = function (path, arguments) {
+const concatHandler = function (path, args) {
 	let callExpression = t.identifier('""')
 	let concatMemberExpression = t.memberExpression(callExpression, t.identifier('concat'))
-	let expression = t.callExpression(concatMemberExpression, arguments)
+	let expression = t.callExpression(concatMemberExpression, args)
 	path.replaceWith(path.parentPath.isJSXExpressionContainer() ? expression : t.jsxExpressionContainer(expression))
 }
 
@@ -43,7 +43,7 @@ const concatHandler = function (path, arguments) {
  * @returns {Array}
  */
 const jsonHandler = function (properties, cssModules, end = true) {
-	let arguments = []
+	let args = []
 	properties.forEach((item, index) => {
 		let { key, value } = item
 		if (t.isIdentifier(key)) {
@@ -51,12 +51,12 @@ const jsonHandler = function (properties, cssModules, end = true) {
 		}
 		const classExpression = optionCssModules(cssModules, key)
 		const conditionalExpression = t.conditionalExpression(value, classExpression, t.identifier('""'))
-		arguments.push(
+		args.push(
 			conditionalExpression,
 			t.identifier(end && index === properties.length - 1 ? '""' : '" "')
 		)
 	})
-	return arguments
+	return args
 }
 /**
  * 处理 String 类型的转换
@@ -67,14 +67,14 @@ const jsonHandler = function (properties, cssModules, end = true) {
  */
 const stringHandler = function (string, cssModules, end = true) {
 	const classList = getClassList(string)
-	let arguments = []
+	let args = []
 	classList.forEach((v, i) => {
-		arguments.push(
+		args.push(
 			optionCssModules(cssModules, t.stringLiteral(v)),
 			t.identifier(end && i === classList.length - 1 ? '""' : '" "')
 		)
 	})
-	return arguments
+	return args
 }
 
 /**
@@ -84,8 +84,8 @@ const stringHandler = function (string, cssModules, end = true) {
  */
 const transformStringClassName = function (path, cssModules) {
 	const string = path.node.value
-	const arguments = stringHandler(string, cssModules)
-	concatHandler(path, arguments)
+	const args = stringHandler(string, cssModules)
+	concatHandler(path, args)
 }
 
 /**
@@ -94,25 +94,25 @@ const transformStringClassName = function (path, cssModules) {
  * @param cssModules
  */
 const transformArrayClassName = function (path, cssModules) {
-	let arguments = []
+	let args = []
 	const classList = path.node.elements
 	classList.forEach((v, i) => {
 		const end = i === classList.length - 1
 		if (t.isObjectExpression(v)) {
 			const { properties } = v
-			arguments = arguments.concat(jsonHandler(properties, cssModules, end))
+			args = args.concat(jsonHandler(properties, cssModules, end))
 		} else if (t.isStringLiteral(v)) {
 			const string = v.value
-			arguments = arguments.concat(stringHandler(string, cssModules, end))
+			args = args.concat(stringHandler(string, cssModules, end))
 		} else {
 			// 非 json 类型
-			arguments.push(
+			args.push(
 				optionCssModules(cssModules, v),
 				t.identifier(i === classList.length - 1 ? '""' : '" "')
 			)
 		}
 	})
-	concatHandler(path, arguments)
+	concatHandler(path, args)
 }
 
 /**
@@ -122,8 +122,8 @@ const transformArrayClassName = function (path, cssModules) {
  */
 const transformObjectClassName = function (path, cssModules) {
 	const { properties } = path.node
-	const arguments = jsonHandler(properties, cssModules)
-	concatHandler(path, arguments)
+	const args = jsonHandler(properties, cssModules)
+	concatHandler(path, args)
 }
 
 module.exports = {

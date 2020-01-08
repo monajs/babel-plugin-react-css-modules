@@ -1,6 +1,6 @@
 {
     "name": "@monajs/babel-plugin-react-css-modules",
-    "version": "2.4.1",
+    "version": "2.5.0",
     "description": "babel-plugin-react-css-modules",
     "main": "src/index.js",
     "scripts": {
